@@ -1,6 +1,7 @@
 #include "keyboard.h"
 
-#define SIZE 4
+#define SIZE_X 20
+#define SIZE_Y 4
 
 #define EMPTY_WATER_CELL -1
 #define WATER_CELL 0
@@ -13,20 +14,18 @@ typedef struct {
 } Coord;
 
 typedef struct {
-  int size;
   int remainingShipCells;
-  int cells[SIZE][SIZE];
+  int cells[SIZE_Y][SIZE_X];
 } Board;
 
 Board boardPlayer1;
 Board boardPlayer2;
 
 void initializeBoard(Board* board) {
-  board->size = SIZE;
   board->remainingShipCells = 0;
   
-  for (int i = 0; i < SIZE; i++) {
-    for (int j = 0; j < SIZE; j++) {
+  for (int i = 0; i < SIZE_Y; i++) {
+    for (int j = 0; j < SIZE_X; j++) {
       board->cells[i][j] = 0;
     }
   }
@@ -56,8 +55,8 @@ int getBoardCellValue(Coord coord, Board* playerBoard) {
 }
 
 void displayBoard(Board* board, bool hideLivingShips, Coord selectedCoord) {
-  for (int i = 0; i < SIZE; i++) {
-    for (int j = 0; j < SIZE; j++) {
+  for (int i = 0; i < SIZE_Y; i++) {
+    for (int j = 0; j < SIZE_X; j++) {
       if (i == selectedCoord.y && j == selectedCoord.x) {
         printf("X ");
       } else {
@@ -108,11 +107,11 @@ Coord selectBoardCoord(Board* board, bool hideLivingShips, const char *descripti
 
     if (command == ARROW_UP && coord.y > 0) {
       coord.y--;
-    } else if (command == ARROW_DOWN && coord.y < SIZE - 1) {
+    } else if (command == ARROW_DOWN && coord.y < SIZE_Y - 1) {
       coord.y++;
     } else if (command == ARROW_LEFT && coord.x > 0) {
       coord.x--;
-    } else if (command == ARROW_RIGHT && coord.x < SIZE - 1) {
+    } else if (command == ARROW_RIGHT && coord.x < SIZE_X - 1) {
       coord.x++;
     }
   }
@@ -121,5 +120,5 @@ Coord selectBoardCoord(Board* board, bool hideLivingShips, const char *descripti
 }
 
 int checkValidCoord(Coord coord) {
-  return coord.x >= 0 && coord.x < SIZE && coord.y >= 0 && coord.y < SIZE;
+  return coord.x >= 0 && coord.x < SIZE_X && coord.y >= 0 && coord.y < SIZE_Y;
 }
